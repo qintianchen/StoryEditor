@@ -9,21 +9,21 @@ using System.IO;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEditor.SceneManagement;
 
-public class StoryEditorWindow : EditorWindow
+public class SE_Window : EditorWindow
 {
 	public static bool isInit;
 	public static int selectedSceneIndex = 0;
 	public static bool isSceneLoaded = false;
 	public static bool isFocused = false;
 	public static StoryEditorConfig config;
-	public static StoryEditorWindow instance;
+	public static SE_Window instance;
 	public static Vector2 offset = Vector2.zero;
 
 
 	[MenuItem("Window/剧情编辑器")]
 	static void OpenWindow()
 	{
-		instance = GetWindow<StoryEditorWindow>();
+		instance = GetWindow<SE_Window>();
 		instance.titleContent = new GUIContent("剧情编辑器");
 		instance.minSize = new Vector2(500, 500);
 	}
@@ -55,25 +55,16 @@ public class StoryEditorWindow : EditorWindow
 
 		if (!isSceneLoaded)
 		{
-			SceneSelectWindow.OnGUI();
+			SE_SceneSelectWindow.OnGUI();
 		}
 		else
 		{
-			MainStoryEditorWindow.OnGUI();
+			SE_MainEditWindow.OnGUI();
 		}
 	}
 
 	#endregion
 
-	#region 事件处理
-
-	private void HandleEvent()
-	{
-		
-	}
-	
-	#endregion
-	
 	#region 辅助函数
 
 	public static string[] GetAllScenePathList()
