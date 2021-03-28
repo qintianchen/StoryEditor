@@ -4,5 +4,4 @@ using UnityEngine;
 public class StoryEditorConfig : ScriptableObject
 {
 	public string[] folderToSearchScene;
-
 }

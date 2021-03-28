@@ -11,23 +11,40 @@ using UnityEditor.SceneManagement;
 
 public class StoryEditorWindow : EditorWindow
 {
-	private bool ifInit;
-	private int selectedSceneIndex = 0;
-	private bool ifSceneLoaded = false;
+	public static bool isInit;
+	public static int selectedSceneIndex = 0;
+	public static bool isSceneLoaded = false;
+	public static bool isFocused = false;
+	public static StoryEditorConfig config;
+	public static StoryEditorWindow instance;
+	public static Vector2 offset = Vector2.zero;
+
 
 	[MenuItem("Window/剧情编辑器")]
 	static void OpenWindow()
 	{
-		var window = GetWindow<StoryEditorWindow>();
-		window.titleContent = new GUIContent("剧情编辑器");
+		instance = GetWindow<StoryEditorWindow>();
+		instance.titleContent = new GUIContent("剧情编辑器");
+		instance.minSize = new Vector2(500, 500);
 	}
 
 	private void Init()
 	{
-		if (!ifInit)
+		if (!isInit)
 		{
-			ifInit = true;
+			config = AssetDatabase.LoadAssetAtPath<StoryEditorConfig>("Assets/StoryEditor/config.asset");
+			isInit = true;
 		}
+	}
+
+	private void OnFocus()
+	{
+		isFocused = true;
+	}
+
+	private void OnLostFocus()
+	{
+		isFocused = false;
 	}
 
 	#region 绘制函数
@@ -36,58 +53,31 @@ public class StoryEditorWindow : EditorWindow
 	{
 		Init();
 
-		if (!ifSceneLoaded)
+		if (!isSceneLoaded)
 		{
-			DrawSceneSelectWindow();
+			SceneSelectWindow.OnGUI();
 		}
 		else
 		{
-			DrawMainStoryEditorWindow();
+			MainStoryEditorWindow.OnGUI();
 		}
-	}
-
-	private void DrawMainStoryEditorWindow()
-	{
-		
-	}
-
-	private void DrawSceneSelectWindow()
-	{
-		var allScenePathList = GetAllScenePathList();
-		selectedSceneIndex = EditorGUILayout.Popup("所有场景", selectedSceneIndex, allScenePathList);
-
-		GUILayout.BeginVertical();
-		GUILayout.BeginHorizontal();
-		GUILayout.FlexibleSpace();
-		if (GUILayout.Button("选择场景", GUILayout.Width(100), GUILayout.Height(100)))
-		{
-			string scenePath = allScenePathList[selectedSceneIndex];
-			string selectSceneName = Path.GetFileNameWithoutExtension(scenePath);
-			if (selectSceneName != EditorSceneManager.GetActiveScene().name)
-			{
-				EditorSceneManager.OpenScene(scenePath.Replace("\\", "/"));
-			}
-			else
-			{
-				Debug.Log("选择当前场景");
-			}
-
-			ifSceneLoaded = true;
-		}
-
-		GUILayout.FlexibleSpace();
-		GUILayout.EndHorizontal();
-		GUILayout.EndVertical();
-		
 	}
 
 	#endregion
 
+	#region 事件处理
+
+	private void HandleEvent()
+	{
+		
+	}
+	
+	#endregion
+	
 	#region 辅助函数
 
-	private string[] GetAllScenePathList()
+	public static string[] GetAllScenePathList()
 	{
-		StoryEditorConfig config = AssetDatabase.LoadAssetAtPath<StoryEditorConfig>("Assets/StoryEditor/config.asset");
 		if (config == null)
 		{
 			Debug.LogError("加载编辑器窗口配置失败：Assets/StoryEditor/config.asset");
@@ -110,7 +100,7 @@ public class StoryEditorWindow : EditorWindow
 
 		return result.ToArray();
 	}
-
+	
 	#endregion
 
 	private void OnDestroy()
