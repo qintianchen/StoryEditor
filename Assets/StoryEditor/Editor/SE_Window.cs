@@ -18,6 +18,7 @@ public class SE_Window : EditorWindow
 	public static StoryEditorConfig config;
 	public static SE_Window instance;
 	public static Vector2 offset = Vector2.zero;
+	public static float scale = 1;
 
 
 	[MenuItem("Window/剧情编辑器")]
