@@ -19,6 +19,7 @@ public class SE_Window : EditorWindow
 	public static SE_Window instance;
 	public static Vector2 offset = Vector2.zero;
 	public static float scale = 1;
+	public static Texture focusTex;
 
 
 	[MenuItem("Window/剧情编辑器")]
@@ -34,6 +35,7 @@ public class SE_Window : EditorWindow
 		if (!isInit)
 		{
 			config = AssetDatabase.LoadAssetAtPath<StoryEditorConfig>("Assets/StoryEditor/config.asset");
+			focusTex = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Textures/focus.png");
 			isInit = true;
 		}
 	}
@@ -47,9 +49,7 @@ public class SE_Window : EditorWindow
 	{
 		isFocused = false;
 	}
-
-	#region 绘制函数
-
+	
 	private void OnGUI()
 	{
 		Init();
@@ -63,9 +63,7 @@ public class SE_Window : EditorWindow
 			SE_MainEditWindow.OnGUI();
 		}
 	}
-
-	#endregion
-
+	
 	#region 辅助函数
 
 	public static string[] GetAllScenePathList()
@@ -91,6 +89,18 @@ public class SE_Window : EditorWindow
 		}
 
 		return result.ToArray();
+	}
+
+	public static Vector2 CollectPostion(Vector2 pos)
+	{
+		pos.x = pos.x * scale + offset.x;
+		pos.y = pos.y * scale + offset.y;
+		return pos;
+	}
+
+	public static Vector2 CollectSize(Vector2 size)
+	{
+		return size * scale;
 	}
 	
 	#endregion

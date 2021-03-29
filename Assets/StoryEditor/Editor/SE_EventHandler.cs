@@ -23,7 +23,7 @@ public static class SE_EventHandler
 
 	private static void OnScrollWheel(Vector2 delta)
 	{
-		SE_Window.scale += delta.y / 10;
+		SE_Window.scale -= delta.y / 10;
 		SE_Window.scale = SE_Window.scale < 0.1f ? 0.1f : SE_Window.scale;
 		// Debug.Log($"scale = {SE_Window.scale}");
 		GUI.changed = true;

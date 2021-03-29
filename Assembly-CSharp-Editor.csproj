@@ -58,6 +58,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Editor\LearnGUI.cs" />
+     <Compile Include="Assets\Editor\LearnGUILayout.cs" />
      <Compile Include="Assets\StoryEditor\Editor\SE_EventHandler.cs" />
      <Compile Include="Assets\StoryEditor\Editor\SE_MainEditWindow.cs" />
      <Compile Include="Assets\StoryEditor\Editor\SE_SceneSelectWindow.cs" />
